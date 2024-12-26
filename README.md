@@ -7,6 +7,7 @@
 ## using
 * React Vite
 * Shadcn
+* Tailwind
 * Python Flask
 * Google Cloud VertexAI
 
