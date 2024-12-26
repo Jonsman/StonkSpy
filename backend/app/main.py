@@ -1,43 +1,44 @@
-import os
-from dotenv import load_dotenv, find_dotenv
-import vertexai
-from vertexai.generative_models import GenerativeModel
-import markdown
+import logging
+from llm import askVertexAI  # Ensure this import exists
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
-# Load environment variables from .env file
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path)
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Get variables from .env file
-project_id = os.getenv("PROJECT_ID")
-location = os.getenv("LOCATION")
+# Create a Flask app
+app = Flask(__name__)
+CORS(app, resources={
+    r"/askVertexAI": {
+        "origins": "*",
+        "methods": ["POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
-# Initialize Vertex AI
-vertexai.init(
-    project=project_id,
-    location=location
-)
+@app.route("/")
+def index():
+    return "Running!"
 
-# Load the Gemini model
-model = GenerativeModel("gemini-1.5-flash-002")
+@app.route("/askVertexAI", methods=["POST"])
+def ask_vertex_ai():
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
+    
+    companyName = request.json.get("companyName")
+    if not companyName:
+        return jsonify({"error": "Company name is required"}), 400
+    
+    try:
+        result = askVertexAI(companyName)
+        if result is None:
+            return jsonify({"error": "No response from AI service"}), 500
+        return result, 200
+    except Exception as e:
+        logger.error(f"Error processing request: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
-company = input("What company do you want to analyze: ")
-print(f"Analyzing the financials of {company}...")
-
-prompt = f"""
-You are a finance expert. State the date your data is from.
-You should do it in three steps:
-1. Summarize the company's main business, products and services.
-2. Break down the competetive advantages.
-3. Outline the investment risks.
-Analyze the following company in the style mentioned before: {company}.
-Always include a disclaimer at the end.
-Style the text in markdown format.
-"""
-
-try:
-    response = model.generate_content(prompt)
-    with open("output.md", "w") as f:
-        f.write(markdown.markdown(response.text))
-except Exception as e:
-    print(f"Error: {e}")
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+    #app.run(host="0.0.0.0", port=5000, debug=True)
