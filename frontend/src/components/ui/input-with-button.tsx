@@ -5,19 +5,15 @@ import { Loader2 } from "lucide-react"
 import { useStore } from "@/lib/store"
 
 
-
 export function InputWithButton() {
   const [companyName, setCompanyName] = useState<string>('')
   const [isPending, setIsPending] = useState<boolean>(false)
   const companyDataStore = useStore()
-  const apiUrl = import.meta.env.VITE_API_URL;
-
-  console.log('apiUrl', apiUrl)
-  console.log('apiUrlEnv', import.meta.env.VITE_API_URL)
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/askVertexAI';
 
   const handleSearch = async () => {
     setIsPending(true)
-    const response = await fetch(apiUrl, {
+    const response = await fetch(backendUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

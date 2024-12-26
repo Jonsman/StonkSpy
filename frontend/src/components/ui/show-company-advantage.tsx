@@ -12,8 +12,6 @@ export function ShowCompanyAdvantage() {
   if (!companyDataStore.companyData) {
     return null
   }
-  
-console.log(companyDataStore.companyData)
 
   return (
     <Card>

@@ -12,7 +12,6 @@ export function ShowCompanyRisk() {
   if (!companyDataStore.companyData) {
     return null
   }
-console.log(companyDataStore.companyData)
 
   return (
     <Card>
