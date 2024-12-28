@@ -10,6 +10,7 @@ load_dotenv(dotenv_path)
 # Get variables from .env file
 project_id = os.getenv("PROJECT_ID")
 location = os.getenv("LOCATION")
+generative_model = os.getenv("GENERATIVE_MODEL")
 
 def askVertexAI(companyName):
     # Initialize Vertex AI
@@ -19,7 +20,7 @@ def askVertexAI(companyName):
     )
 
     # Load the Gemini model
-    model = GenerativeModel("gemini-1.5-flash-002")
+    model = GenerativeModel(generative_model)
 
     #company = input("What company do you want to analyze: ")
     print(f"Analyzing the financials of {companyName}...")

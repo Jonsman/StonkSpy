@@ -1,5 +1,5 @@
 import logging
-from llm import askVertexAI  # Ensure this import exists
+from llm import askVertexAI
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -21,8 +21,11 @@ CORS(app, resources={
 def index():
     return "Running!"
 
-@app.route("/askVertexAI", methods=["POST"])
+@app.route("/askVertexAI", methods=["POST", "OPTIONS"])
 def ask_vertex_ai():
+    if request.method == "OPTIONS":
+        return "", 204
+
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
     

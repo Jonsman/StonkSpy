@@ -1,3 +1,4 @@
 .env
 config/
 output.md
+.venv/
