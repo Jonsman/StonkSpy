@@ -3,7 +3,7 @@ WORKDIR /app/frontend
 COPY frontend/package*.json ./
 RUN npm cache clean --force && \
     npm install
-COPY frontend/ . 
+COPY frontend/ .
 RUN npm run build
  
 FROM nginx:latest as production

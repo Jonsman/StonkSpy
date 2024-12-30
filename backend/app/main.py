@@ -4,18 +4,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Create a Flask app
 app = Flask(__name__)
-CORS(app, resources={
-    r"/askVertexAI": {
-        "origins": "*",
-        "methods": ["POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"]
-    }
-})
+CORS(app, resources={r"/*": {
+    "origins": "*",
+    "methods": ["POST", "OPTIONS"],
+    "allow_headers": ["Content-Type"],
+    }})
 
 @app.route("/")
 def index():
@@ -34,7 +32,9 @@ def ask_vertex_ai():
         return jsonify({"error": "Company name is required"}), 400
     
     try:
+        logger.debug(f"Received companyName {companyName}")
         result = askVertexAI(companyName)
+        logger.debug(f"Received result from askVertexAI: {result}")
         if result is None:
             return jsonify({"error": "No response from AI service"}), 500
         return result, 200

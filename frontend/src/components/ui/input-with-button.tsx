@@ -4,12 +4,13 @@ import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { useStore } from "@/lib/store"
 
-
 export function InputWithButton() {
   const [companyName, setCompanyName] = useState<string>('')
   const [isPending, setIsPending] = useState<boolean>(false)
   const companyDataStore = useStore()
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/askVertexAI';
+  const backendUrl = import.meta.env.VITE_BACKEND_NAME || 'http://localhost:5000/askVertexAI'
+
+  
 
   const handleSearch = async () => {
     setIsPending(true)
@@ -26,6 +27,12 @@ export function InputWithButton() {
     setIsPending(false)
   }
 
+  const handleKeyPress = async (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleSearch(); 
+    }
+  };
+
   return (
     <div className="flex w-full max-w-sm items-center space-x-2">
       <Input
@@ -33,6 +40,7 @@ export function InputWithButton() {
         placeholder="What company do you want to look up?"
         value={companyName}
         onChange={(e) => setCompanyName(e.target.value)}
+        onKeyDown={handleKeyPress}
       />
       <Button
         type="submit"
