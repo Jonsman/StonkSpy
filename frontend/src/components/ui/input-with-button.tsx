@@ -8,9 +8,24 @@ export function InputWithButton() {
   const [companyName, setCompanyName] = useState<string>('')
   const [isPending, setIsPending] = useState<boolean>(false)
   const companyDataStore = useStore()
-  const backendUrl = import.meta.env.VITE_BACKEND_NAME || 'http://localhost:5000/askVertexAI'
+  const backendName = import.meta.env.VITE_BACKEND_NAME || 'http://localhost:5000/askVertexAI'
+  const [backendUrl, setBackendUrl] = useState<string>('')
 
+  const loggin = async () => {
+    try {
+      
+      console.log(backendName)
   
+      const newUrl = 'https://' + backendName + '/askVertexAI'
+      console.log(newUrl)
+      setBackendUrl(newUrl)
+      const response = await fetch(newUrl)
+      console.log(response)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
 
   const handleSearch = async () => {
     setIsPending(true)
@@ -31,7 +46,7 @@ export function InputWithButton() {
     if (event.key === 'Enter') {
       handleSearch(); 
     }
-  };
+  }
 
   return (
     <div className="flex w-full max-w-sm items-center space-x-2">
@@ -55,6 +70,12 @@ export function InputWithButton() {
         ) : (
           'Search'
         )}
+      </Button>
+      <Button
+        type="submit"
+        onClick={loggin}
+        >
+        Loggin
       </Button>
     </div>
   )

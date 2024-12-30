@@ -2,3 +2,6 @@
 config/
 output.md
 .venv/
+Dockerfile_backend
+Dockerfile_frontend
+Dockerfile_proxy
