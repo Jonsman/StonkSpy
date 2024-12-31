@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
       {
-        "src": "backend/main.py",
+        "src": "functions/index.py",
         "use": "@vercel/python"
       },
       {
@@ -13,7 +13,7 @@
     "routes": [
       {
         "src": "/api/(.*)",
-        "dest": "/backend/main.py"
+        "dest": "/functions/index.py"
       },
       {
         "src": "/(.*)",

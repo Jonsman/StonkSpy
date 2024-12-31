@@ -1,31 +1,29 @@
+import logging
+from flask import Flask, request, jsonify
 import os
 import json
-from dotenv import load_dotenv, find_dotenv
 import vertexai
 from vertexai.generative_models import GenerativeModel
-import logging
 from google.oauth2 import service_account
 
-# Load environment variables from .env file
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path)
+# For local testing
+#from dotenv import load_dotenv
+#load_dotenv()
 
-# Get variables from .env file
-#project_id = os.getenv("PROJECT_ID")
-#location = os.getenv("LOCATION")
-#generative_model = os.getenv("GENERATIVE_MODEL")
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
+# Load environment variables
 project_id = os.environ.get("PROJECT_ID")
 location = os.environ.get("LOCATION")
 generative_model = os.environ.get("GENERATIVE_MODEL")
 credentials_string = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
 
-# Initialize logging
-logger = logging.getLogger(__name__)
-
+# Prompt the model to generate content
 def askVertexAI(companyName):
     logger.debug(f"Initializing Vertex AI with project {project_id} and location {location}")
-    # Load credentials from string
+    # Load credentials from environment variable
     credentials_data = json.loads(credentials_string)
     credentials = service_account.Credentials.from_service_account_info(credentials_data)
 
@@ -64,10 +62,42 @@ def askVertexAI(companyName):
         response = model.generate_content(prompt)
         logger.debug(f"Received response from Vertex AI: {response}")
         if response and response.text:
-            return response.text[7:-4]
+            return response.text[7:-4] # remove leading/trailing quotes
         else:
             logger.error(f"No response from Vertex AI")
             return None
     except Exception as e:
         logger.error(f"Error processing request: {str(e)}")
         return None
+
+# Create a Flask app
+app = Flask(__name__)
+
+@app.route("/api/askVertexAI", methods=["POST", "OPTIONS"])
+def ask_vertex_ai():
+    if request.method == "OPTIONS":
+        return "", 204
+
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
+    
+    companyName = request.json.get("companyName")
+    if not companyName:
+        return jsonify({"error": "Company name is required"}), 400
+    
+    try:
+        logger.debug(f"Received companyName {companyName}")
+        result = askVertexAI(companyName)
+        logger.debug(f"Received result from askVertexAI: {result}")
+        if result is None:
+            return jsonify({"error": "No response from AI service"}), 500
+        return result, 200
+    except Exception as e:
+        logger.error(f"Error processing request: {str(e)}")
+        return jsonify({"error": "Internal server error", "message": str(e)}), 500
+
+# This is for local testing
+if __name__ == "__main__":
+    #app.run(debug=True)
+    app.run()
+
