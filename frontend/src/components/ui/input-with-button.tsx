@@ -8,28 +8,12 @@ export function InputWithButton() {
   const [companyName, setCompanyName] = useState<string>('')
   const [isPending, setIsPending] = useState<boolean>(false)
   const companyDataStore = useStore()
-  const backendName = import.meta.env.VITE_BACKEND_NAME || 'http://localhost:5000/askVertexAI'
-  const [backendUrl, setBackendUrl] = useState<string>('')
-
-  const loggin = async () => {
-    try {
-      
-      console.log(backendName)
-  
-      const newUrl = 'https://' + backendName + '/askVertexAI'
-      console.log(newUrl)
-      setBackendUrl(newUrl)
-      const response = await fetch(newUrl)
-      console.log(response)
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  const api = import.meta.env.VITE_API || 'http://localhost:5000/askVertexAI'
 
 
   const handleSearch = async () => {
     setIsPending(true)
-    const response = await fetch(backendUrl, {
+    const response = await fetch(api, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -70,12 +54,6 @@ export function InputWithButton() {
         ) : (
           'Search'
         )}
-      </Button>
-      <Button
-        type="submit"
-        onClick={loggin}
-        >
-        Loggin
       </Button>
     </div>
   )
