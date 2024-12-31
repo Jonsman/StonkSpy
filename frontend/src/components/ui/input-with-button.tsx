@@ -8,7 +8,7 @@ export function InputWithButton() {
   const [companyName, setCompanyName] = useState<string>('')
   const [isPending, setIsPending] = useState<boolean>(false)
   const companyDataStore = useStore()
-  const api = import.meta.env.VITE_API || 'http://localhost:5000/askVertexAI'
+  const api = 'http://localhost/api/askVertexAI'
 
 
   const handleSearch = async () => {

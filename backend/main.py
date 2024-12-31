@@ -1,23 +1,17 @@
 import logging
 from llm import askVertexAI
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify, send_from_directory
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Create a Flask app
-app = Flask(__name__)
-CORS(app, resources={r"/*": {
-    "origins": "*",
-    "methods": ["POST", "OPTIONS"],
-    "allow_headers": ["Content-Type"],
-    }})
+app = Flask(__name__, static_folder="../frontend/dist", static_url_path="/")
 
 @app.route("/")
 def index():
-    return "Running!"
+    return send_from_directory(app.static_folder, "index.html")
 
 @app.route("/askVertexAI", methods=["POST", "OPTIONS"])
 def ask_vertex_ai():
@@ -43,5 +37,5 @@ def ask_vertex_ai():
         return jsonify({"error": "Internal server error", "message": str(e)}), 500
 
 if __name__ == "__main__":
-    #app.run(host="0.0.0.0", port=5000)
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0")
+    #app.run(host="0.0.0.0", port=5000, debug=True)

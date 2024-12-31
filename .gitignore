@@ -5,3 +5,4 @@ output.md
 Dockerfile_backend
 Dockerfile_frontend
 Dockerfile_proxy
+.vercel
