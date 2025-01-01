@@ -98,5 +98,5 @@ def ask_vertex_ai():
 
 # This is for local testing
 if __name__ == "__main__":
-    app.run(debug=True)
-    #app.run()
+    #app.run(debug=True)
+    app.run()
