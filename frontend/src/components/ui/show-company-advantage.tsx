@@ -7,21 +7,21 @@ import {
 } from "@/components/ui/card"
 
 export function ShowCompanyAdvantage() {
-  const companyDataStore = useStore()
+  const AppStore = useStore()
 
-  if (!companyDataStore.companyData) {
+  if (!AppStore.companyData || AppStore.isPendingZustand) {
     return null
   }
 
   return (
-    <Card>
+    <Card className="w-1/2">
         <CardHeader>
             <CardTitle>Competitive Advantages</CardTitle>
         </CardHeader>
       <CardContent>
         <div>
           <ul className="list-decimal text-sm">
-            {companyDataStore.companyData?.competitiveAdvantages?.map((advantage, index) => (
+            {AppStore.companyData?.competitiveAdvantages?.map((advantage, index) => (
               <li className="pb-2.5" key={index}>{advantage}</li>
             )) ?? <li>No competitive advantages available</li>}
           </ul>

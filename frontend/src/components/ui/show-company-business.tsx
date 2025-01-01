@@ -9,25 +9,25 @@ import {
 } from "@/components/ui/card"
 
 export function ShowCompanyBusiness() {
-  const companyDataStore = useStore()
+  const AppStore = useStore()
 
-  if (!companyDataStore.companyData) {
+  if (!AppStore.companyData || AppStore.isPendingZustand) {
     return null
   }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{companyDataStore.companyData.companyName}</CardTitle>
-        <CardDescription>{companyDataStore.companyData.dateOfData}</CardDescription>
+        <CardTitle>{AppStore.companyData.companyName}</CardTitle>
+        <CardDescription>{AppStore.companyData.dateOfData}</CardDescription>
       </CardHeader>
       <CardContent>
         <div>
-          <p>{companyDataStore.companyData.businessDescription}</p>
+          <p>{AppStore.companyData.businessDescription}</p>
         </div>
       </CardContent>
       <CardFooter>
-        <p>{companyDataStore.companyData.disclaimer}</p>
+        <p>{AppStore.companyData.disclaimer}</p>
       </CardFooter>
     </Card>
   )

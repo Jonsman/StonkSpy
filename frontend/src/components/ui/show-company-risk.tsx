@@ -7,21 +7,21 @@ import {
 } from "@/components/ui/card"
 
 export function ShowCompanyRisk() {
-  const companyDataStore = useStore()
+  const AppStore = useStore()
 
-  if (!companyDataStore.companyData) {
+  if (!AppStore.companyData || AppStore.isPendingZustand) {
     return null
   }
 
   return (
-    <Card>
+    <Card className="w-1/2">
         <CardHeader>
             <CardTitle>Investment Risks</CardTitle>
         </CardHeader>
       <CardContent>
         <div>
           <ul className="list-decimal text-sm">
-            {companyDataStore.companyData?.investmentRisks?.map((risk, index) => (
+            {AppStore.companyData?.investmentRisks?.map((risk, index) => (
               <li className="pb-2.5" key={index}>{risk}</li>
             )) ?? <li>No competitive advantages available</li>}
           </ul>
