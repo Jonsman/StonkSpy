@@ -6,12 +6,11 @@ import { useStore } from "@/lib/store"
 
 export function InputWithButton() {
   const [companyName, setCompanyName] = useState<string>('')
-  const [isPending, setIsPending] = useState<boolean>(false)
-  const companyDataStore = useStore()
+  const AppStore = useStore()
   const api = 'api/askVertexAI'
 
   const handleSearch = async () => {
-    setIsPending(true)
+    AppStore.setIsPendingZustand(true)
     const response = await fetch(api, {
       method: 'POST',
       headers: {
@@ -21,8 +20,8 @@ export function InputWithButton() {
     })
 
     const data = await response.json()
-    companyDataStore.setCompanyData(data)
-    setIsPending(false)
+    AppStore.setCompanyData(data)
+    AppStore.setIsPendingZustand(false)
   }
 
   const handleKeyPress = async (event: React.KeyboardEvent) => {
@@ -35,17 +34,17 @@ export function InputWithButton() {
     <div className="flex w-full max-w-sm items-center space-x-2">
       <Input
         type="text"
-        placeholder="What company do you want to look up?"
+        placeholder="What company do you want to research?"
         value={companyName}
         onChange={(e) => setCompanyName(e.target.value)}
         onKeyDown={handleKeyPress}
       />
       <Button
         type="submit"
-        disabled={isPending}
+        disabled={AppStore.isPendingZustand}
         onClick={handleSearch}
       >
-        {isPending ? (
+        {AppStore.isPendingZustand ? (
           <>
             <Loader2 className="h-5 w-5 animate-spin" />
             Loading

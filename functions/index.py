@@ -7,8 +7,8 @@ from vertexai.generative_models import GenerativeModel
 from google.oauth2 import service_account
 
 # For local testing
-#from dotenv import load_dotenv
-#load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -98,6 +98,5 @@ def ask_vertex_ai():
 
 # This is for local testing
 if __name__ == "__main__":
-    #app.run(debug=True)
-    app.run()
-
+    app.run(debug=True)
+    #app.run()
