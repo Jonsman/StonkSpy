@@ -39,18 +39,19 @@ def askVertexAI(companyName):
     logger.debug(f"Initialized Vertex AI with model {generative_model}")
 
     prompt = f"""
-    You are a finance expert. State the date your data is from.
+    You are a finance expert. Use the latest data available. State the date your data is from.
     You should do it in three steps:
     1. Summarize the company's main business, products and services.
     2. Break down the competetive advantages.
     3. Outline the investment risks.
     Analyze the following company in the style mentioned before: {companyName}.
     If you can't find the company or the input seems incorrect return empty properties. Then set companyName to "Business not found".
-    Always include a disclaimer at the end except if the input is incorrect.
+    Always include a short and consise disclaimer at the end except if the input is incorrect.
     Style the text in raw JSON format without markdown.
     Name the properties of the JSON object as follows:
     - companyName (include stock ticker if available)
     - dateOfData
+    - dataSource
     - businessDescription
     - competitiveAdvantages
     - investmentRisks
@@ -98,5 +99,5 @@ def ask_vertex_ai():
 
 # This is for local testing
 if __name__ == "__main__":
-    #app.run(debug=True)
-    app.run()
+    app.run(debug=True)
+    #app.run()
