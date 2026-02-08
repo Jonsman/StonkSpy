@@ -21,7 +21,7 @@ export function ShowCompanyAdvantage() {
       <CardContent>
         <div>
           <ul className="list-decimal text-sm">
-            {AppStore.companyData?.competitiveAdvantages?.map((advantage, index) => (
+            {AppStore.companyData?.competitiveAdvantages?.map((item, index) => (
               <li className="pb-2.5" key={index}>{advantage}</li>
             )) ?? <li>No competitive advantages available</li>}
           </ul>

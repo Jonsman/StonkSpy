@@ -17,5 +17,5 @@ variable "app_name" {
 variable "vertexai_model" {
   description = "Vertex AI Model Name"
   type        = string
-  default     = "gemini-2.5-pro"
+  default     = "gemini-2.5-flash"
 }
