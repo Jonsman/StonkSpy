@@ -23,7 +23,7 @@ export function ShowCompanyRisk() {
           <ul className="list-decimal text-sm">
             {AppStore.companyData?.investmentRisks?.map((risk, index) => (
               <li className="pb-2.5" key={index}>{risk}</li>
-            )) ?? <li>No competitive advantages available</li>}
+            )) ?? <li>No investment risks available</li>}
           </ul>
         </div>
       </CardContent>

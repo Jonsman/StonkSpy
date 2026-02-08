@@ -19,15 +19,15 @@ export function ShowCompanyBusiness() {
     <Card>
       <CardHeader>
         <CardTitle>{AppStore.companyData.companyName}</CardTitle>
-        <CardDescription>{AppStore.companyData.dateOfData}</CardDescription>
+        <CardDescription>{String(AppStore.companyData.dateOfData)}</CardDescription>
       </CardHeader>
       <CardContent>
         <div>
-          <p>{AppStore.companyData.businessDescription}</p>
+          <p>{String(AppStore.companyData.businessDescription)}</p>
         </div>
       </CardContent>
       <CardFooter>
-        <p>{AppStore.companyData.disclaimer}</p>
+        <p>{String(AppStore.companyData.disclaimer)}</p>
       </CardFooter>
     </Card>
   )

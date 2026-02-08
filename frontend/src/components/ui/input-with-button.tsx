@@ -7,7 +7,9 @@ import { useStore } from "@/lib/store"
 export function InputWithButton() {
   const [companyName, setCompanyName] = useState<string>('')
   const AppStore = useStore()
-  const api = 'api/askVertexAI'
+  // const api = 'api/askVertexAI'
+  const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+  const api = `${API_BASE_URL}/api/askVertexAI`;
 
   const handleSearch = async () => {
     AppStore.setIsPendingZustand(true)

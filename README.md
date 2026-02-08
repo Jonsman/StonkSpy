@@ -11,22 +11,3 @@
 * Python Flask
 * Google Cloud VertexAI
 
-
-## dev setup
-
-### backend
-
-You need a Google Cloud account, setup a project and activate the VertexAI service for this project.
-
-Then you need to create a service account which has the Vertex AI User role.
-
-Create a private key for the service account and download it as a .json file. This is used for the backend to authenticate to the Google Cloud.
-
-* create `.env` file in root to store Google Cloud information for VertexAI
-  * with Project ID `PROJECT_ID`, like `PROJECT_ID = "my-google-cloud-project-name"`
-  * with Location `LOCATION`, like `LOCATION = "us-central1"`
-  * with Google Application Credentials `GOOGLE_APPLICATION_CREDENTIALS`, like `GOOGLE_APPLICATION_CREDENTIALS = "path-to-google-service-account-private-key.json"`
-* run `pip install -r requirements.txt`
-
-### frontend
-* `cd` to the frontend folder and run `npm install`
