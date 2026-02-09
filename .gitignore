@@ -4,3 +4,4 @@ config/
 .venv/
 .vercel
 helper.js
+mock-api-go/
