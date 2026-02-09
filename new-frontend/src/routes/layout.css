@@ -1,3 +1,31 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+:root {
+  color-scheme: light dark;
+  --bg: #f6f7fb;
+  --text: #111418;
+  --card: #ffffff;
+  --accent: #2d6cdf;
+}
+
+[data-theme="dark"] {
+  --bg: #0f1115;
+  --text: #e7e9ee;
+  --card: #171a21;
+  --accent: #7aa2ff;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.card {
+  background: var(--card);
+}
+
+a, .accent {
+  color: var(--accent);
+}

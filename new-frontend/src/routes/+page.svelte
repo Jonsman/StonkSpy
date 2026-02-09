@@ -1,2 +1,16 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    import {SearchPage} from '$lib';
+</script>
+
+<style>
+    .searchPage {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        margin-top: -80px;
+    }
+</style>
+
+<div class="searchPage">
+    <SearchPage/>
+</div>
