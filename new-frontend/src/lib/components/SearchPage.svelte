@@ -9,7 +9,7 @@
         on:click={launchLogo}
     />
     <div>
-        <input class="searchBar rounded-2xl focus:outline-2 focus:outline-offset-2"
+        <input class="searchBar rounded-2xl"
         placeholder="Tolle Suche hier..."
         on:keydown={
             (e) => {
@@ -24,6 +24,8 @@
 <style>
     .mainSection {
         justify-items: center;
+        display: grid;
+        margin-top: -80px;
     }
     .logo {
         min-width: min(480px, 10vh);

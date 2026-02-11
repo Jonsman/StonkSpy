@@ -1,16 +1,20 @@
 <script>
-    import {SearchPage} from '$lib';
+    import {SearchPage, CompanyInformation} from '$lib';
 </script>
 
 <style>
     .searchPage {
-        min-height: 100vh;
-        display: grid;
+        height: 100vh;
+        width: 100vw;
+        padding: 5vw 5vh 5vw 5vh;
         place-items: center;
-        margin-top: -80px;
+        place-content: center;
     }
 </style>
 
 <div class="searchPage">
-    <SearchPage/>
+    <div style="margin-bottom: 16px;">
+        <SearchPage/>
+    </div>
+    <CompanyInformation/>
 </div>
