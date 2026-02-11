@@ -9,6 +9,8 @@
   --text: #111418;
   --card: #ffffff;
   --accent: #2d6cdf;
+  --pro: #289d32;
+  --con: #7a2222;
 }
 
 [data-theme="dark"] {

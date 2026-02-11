@@ -18,5 +18,7 @@
     <div style="margin-bottom: 16px;">
         <SearchPage/>
     </div>
-    <CompanyInformation/>
+    <div hidden={true}>
+        <CompanyInformation/>
+    </div>
 </div>
