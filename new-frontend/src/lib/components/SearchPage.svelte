@@ -1,13 +1,25 @@
-<section class="mainSection"
-        class:logo-launch={logoLaunched}
-        class:logo-return={!logoLaunched}
-        style={`--logo-transform-y: ${logoTransformY}`}>
-    <img
-        class="logo"
-        src={logo}
-        alt="StonkSpy is nice"
-        on:click={launchLogo}
-    />
+<script lang="ts">
+    import logo from '$lib/assets/favicon.svg'
+
+    export let onSearched: (query: string) => void = () => {}
+
+    let showLogo = true;
+
+    function onSearch(input: string) {
+        console.log(input);
+        onSearched(input);
+        showLogo = !showLogo;
+    }
+</script>
+
+<section class="mainSection">
+    {#if showLogo}
+        <img
+            class="logo"
+            src={logo}
+            alt="StonkSpy is nice"
+        />
+    {/if}
     <div>
         <input class="searchBar rounded-2xl"
         placeholder="Tolle Suche hier..."
@@ -48,40 +60,4 @@
     .searchBar:focus {
         box-shadow: 0 6px 24px color-mix(in srgb, var(--accent) 25%, transparent);
     }
-    .logo-launch {
-        animation: logo-launch 900ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    }
-    .logo-return {
-        animation: logo-return 900ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    }
-    @keyframes logo-launch {
-        from {
-            transform: translateY(0);
-        }
-        to {
-            transform: translateY(var(--logo-transform-y));
-        }
-    }
-    @keyframes logo-return {
-        from {
-            transform: translateY(var(--logo-transform-y));
-        }
-        to {
-            transform: translateY(0);
-        }
-    }
 </style>
-
-<script lang="ts">
-    import logo from '$lib/assets/favicon.svg'
-
-    const logoTransformY = '-30vh'
-    let logoLaunched = false
-    function onSearch(input: string) {
-        console.log(input)
-    }
-
-    function launchLogo() {
-        logoLaunched = !logoLaunched
-    }
-</script>

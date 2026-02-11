@@ -1,3 +1,73 @@
+<script lang="ts">
+    import CornerLabel from '$lib/components/CornerLabel.svelte';
+    import logo from '$lib/assets/favicon.svg'
+    import { rawCompanyReport } from '$lib/data/companyReportExample';
+
+    type CompanyReport = {
+        company_report: {
+            company_overview: { description: string };
+            business_units: string[];
+            key_financial_data: {
+                annual_revenue: number;
+                net_income: number;
+                gross_profit_margin: number;
+                operating_expenses: number;
+                market_capitalization: number;
+                debt_to_equity_ratio: number;
+                pe_ratio: number;
+            };
+            advantages: Array<{ description: string; facts: string[] }>;
+            disadvantages: Array<{ description: string; facts: string[] }>;
+            top_competitors: Array<{
+                name: string;
+                description: string;
+                size: string;
+                key_markets: string[];
+                pe_ratio: number;
+            }>;
+        };
+    };
+
+    function isCompanyReport(value: unknown): value is CompanyReport {
+        const v = value as CompanyReport;
+        return !!v?.company_report?.company_overview?.description;
+    }
+
+    function mapToCompanyReport(json: unknown): CompanyReport {
+        if (!isCompanyReport(json)) {
+            throw new Error('Invalid CompanyReport JSON');
+        }
+        return json;
+    }
+    
+    function getKeyFinancialDataString(
+        data: CompanyReport['company_report']['key_financial_data']
+    ): string[] {
+        const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+        const num = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+
+        const fmtMoney = (v: number | null | undefined) =>
+            v == null ? 'N/A' : usd.format(v);
+        const fmtNum = (v: number | null | undefined) =>
+            v == null ? 'N/A' : num.format(v);
+        const fmtPct = (v: number | null | undefined) =>
+            v == null ? 'N/A' : `${num.format(v)}%`;
+
+        return [
+            `Annual Revenue: ${fmtMoney(data.annual_revenue)}`,
+            `Net Income: ${fmtMoney(data.net_income)}`,
+            `Gross Profit Margin: ${fmtPct(data.gross_profit_margin)}`,
+            `Operating Expenses: ${fmtMoney(data.operating_expenses)}`,
+            `Market Cap: ${fmtMoney(data.market_capitalization)}`,
+            `Debt/Equity: ${fmtNum(data.debt_to_equity_ratio)}`,
+            `P/E Ratio: ${fmtNum(data.pe_ratio)}`
+        ];
+    }
+
+    const parsed = JSON.parse(rawCompanyReport);
+    const report = mapToCompanyReport(parsed);
+</script>
+
 <section class="main grid grid-cols-2 gap-4 rounded-2xl">
     <div class="boxed">
         <CornerLabel text="Facts" side="left" />
@@ -96,73 +166,3 @@
         margin-top: 0.25rem;
     }
 </style>
-
-<script lang="ts">
-    import CornerLabel from '$lib/components/CornerLabel.svelte';
-    import logo from '$lib/assets/favicon.svg'
-    import { rawCompanyReport } from '$lib/data/companyReportExample';
-
-    type CompanyReport = {
-        company_report: {
-            company_overview: { description: string };
-            business_units: string[];
-            key_financial_data: {
-                annual_revenue: number;
-                net_income: number;
-                gross_profit_margin: number;
-                operating_expenses: number;
-                market_capitalization: number;
-                debt_to_equity_ratio: number;
-                pe_ratio: number;
-            };
-            advantages: Array<{ description: string; facts: string[] }>;
-            disadvantages: Array<{ description: string; facts: string[] }>;
-            top_competitors: Array<{
-                name: string;
-                description: string;
-                size: string;
-                key_markets: string[];
-                pe_ratio: number;
-            }>;
-        };
-    };
-
-    function isCompanyReport(value: unknown): value is CompanyReport {
-        const v = value as CompanyReport;
-        return !!v?.company_report?.company_overview?.description;
-    }
-
-    function mapToCompanyReport(json: unknown): CompanyReport {
-        if (!isCompanyReport(json)) {
-            throw new Error('Invalid CompanyReport JSON');
-        }
-        return json;
-    }
-    
-    function getKeyFinancialDataString(
-        data: CompanyReport['company_report']['key_financial_data']
-    ): string[] {
-        const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-        const num = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
-
-        const fmtMoney = (v: number | null | undefined) =>
-            v == null ? 'N/A' : usd.format(v);
-        const fmtNum = (v: number | null | undefined) =>
-            v == null ? 'N/A' : num.format(v);
-        const fmtPct = (v: number | null | undefined) =>
-            v == null ? 'N/A' : `${num.format(v)}%`;
-
-        return [
-            `Annual Revenue: ${fmtMoney(data.annual_revenue)}`,
-            `Net Income: ${fmtMoney(data.net_income)}`,
-            `Gross Profit Margin: ${fmtPct(data.gross_profit_margin)}`,
-            `Operating Expenses: ${fmtMoney(data.operating_expenses)}`,
-            `Market Cap: ${fmtMoney(data.market_capitalization)}`,
-            `Debt/Equity: ${fmtNum(data.debt_to_equity_ratio)}`,
-            `P/E Ratio: ${fmtNum(data.pe_ratio)}`
-        ];
-    }
-
-    const parsed = JSON.parse(rawCompanyReport);
-    const report = mapToCompanyReport(parsed);
-</script>
