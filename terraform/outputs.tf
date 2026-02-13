@@ -8,7 +8,7 @@ output "frontend_url" {
   description = "Frontend URL"
 }
 
-output "backend_url" {
-  value       = google_cloud_run_v2_service.backend.uri
-  description = "Backend URL"
+output "agent_backend_url" {
+  value       = google_cloud_run_v2_service.agent.uri
+  description = "Agent Backend URL"
 }

@@ -31,9 +31,9 @@ resource "google_artifact_registry_repository" "repo" {
 }
 
 # Service Accounts
-resource "google_service_account" "backend_sa" {
-  account_id   = "${var.app_name}-backend-sa"
-  display_name = "Service Account for Backend with Vertex AI access"
+resource "google_service_account" "agent_sa" {
+  account_id   = "${var.app_name}-agent-sa"
+  display_name = "Service Account for Agent with Vertex AI access"
 }
 
 resource "google_service_account" "frontend_sa" {
@@ -41,11 +41,11 @@ resource "google_service_account" "frontend_sa" {
   display_name = "Service Account for Frontend"
 }
 
-# Allow Backend Vertex AI access
-resource "google_project_iam_member" "vertex_ai_user_backend" {
+# Allow Agent Vertex AI access
+resource "google_project_iam_member" "vertex_ai_user_agent" {
   project = var.project_id
   role    = "roles/aiplatform.user" # Allows using Vertex AI resources
-  member  = "serviceAccount:${google_service_account.backend_sa.email}"
+  member  = "serviceAccount:${google_service_account.agent_sa.email}"
 }
 
 # Frontend
@@ -81,18 +81,18 @@ resource "google_cloud_run_v2_service_iam_binding" "frontend" {
   ]
 }
 
-# Backend
-resource "google_cloud_run_v2_service" "backend" {
-  name     = "backend-cloudrun-service"
+# Agent Backend
+resource "google_cloud_run_v2_service" "agent" {
+  name     = "agent-cloudrun-service"
   location = var.region
   deletion_protection = false
   ingress = "INGRESS_TRAFFIC_ALL"
 
   template {
-    service_account = google_service_account.backend_sa.email
+    service_account = google_service_account.agent_sa.email
     health_check_disabled = true
     containers {
-      image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.repo.repository_id}/backend:latest"
+      image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.repo.repository_id}/agent:latest"
       resources {
         limits = {
           cpu    = "2"
@@ -111,15 +111,19 @@ resource "google_cloud_run_v2_service" "backend" {
         name  = "VERTEXAI_MODEL"
         value = var.vertexai_model
       }
+      env {
+        name  = "GOOGLE_GENAI_USE_VERTEXAI"
+        value = "TRUE"
+      }
     }
   }
 }
 
-# Make Backend public
-resource "google_cloud_run_v2_service_iam_binding" "backend" {
+# Make Agent Backend public
+resource "google_cloud_run_v2_service_iam_binding" "agent" {
   project  = var.project_id
-  location = google_cloud_run_v2_service.backend.location
-  name     = google_cloud_run_v2_service.backend.name
+  location = google_cloud_run_v2_service.agent.location
+  name     = google_cloud_run_v2_service.agent.name
   role     = "roles/run.invoker"
   members  = [
     "allUsers"
